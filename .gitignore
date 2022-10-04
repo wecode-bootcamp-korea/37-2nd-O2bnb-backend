@@ -1,0 +1,9 @@
+node_modules
+
+.env
+
+.vscode
+
+db/schema.sql
+
+db/migration

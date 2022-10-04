@@ -6,4 +6,8 @@ node_modules
 
 db/schema.sql
 
-db/migration
+.DS_Store
+
+db/.DS_Store
+
+db/migrations/.DS_Store

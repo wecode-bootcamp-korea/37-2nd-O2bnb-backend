@@ -5,3 +5,5 @@ node_modules
 .vscode
 
 db/schema.sql
+
+db/migration

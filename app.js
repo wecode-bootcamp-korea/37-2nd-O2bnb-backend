@@ -1,21 +1,25 @@
-require("dotenv").config();        
-const express = require('express');
-const morgan = require('morgan');   
-const cors = require('cors');   
-const { globalErrorHandler } = require('./utils/error');    
+const express = require("express");
+const cors = require("cors");
+const morgan = require("morgan");
+const { globalErrorHandler } = require('./src/utils/error');    
+const { routes } = require("./src/routers");
 
-const app = express();
-const PORT = process.env.PORT;
-//const routes = require('./routers');
+const createApp = () => {
+  const app = express();
 
-app.use(cors());
-app.use(morgan('dev'));
-app.use(express.json());
-//app.use(routes);
-app.use(globalErrorHandler);
+  app.use(express.json());
+  app.use(cors());
+  app.use(morgan("combined"));
 
-app.get('/ping', function (req, res, next) {
+  app.get('/ping', function (req, res, next) {
     res.json({message : 'pong'})
   })
 
-app.listen(PORT, () => { console.log(`Running on port ${PORT}`);});
+  app.use(routes);
+
+  app.use(globalErrorHandler);
+
+  return app;
+};
+
+module.exports = { createApp };

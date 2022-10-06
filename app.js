@@ -1,8 +1,8 @@
 const express = require("express");
 const cors = require("cors");
 const morgan = require("morgan");
-const { globalErrorHandler } = require('./src/utils/error');    
-const routes = require("./src/routers");
+const routers = require("./src/routers");
+const { globalErrorHandler } = require('./src/utils/error');
 
 const createApp = () => {
   const app = express();
@@ -15,7 +15,7 @@ const createApp = () => {
     res.json({message : 'pong'})
   })
 
-  app.use(routes);
+  app.use(routers);
 
   app.use(globalErrorHandler);
 

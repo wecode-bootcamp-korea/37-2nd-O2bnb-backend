@@ -4,6 +4,8 @@ CREATE TABLE products_options(
   product_id INT NOT NULL,
   option_id INT NOT NULL,
   PRIMARY KEY (id)
+  FOREIGN KEY (product_id) REFERENCES products (id),
+  FOREIGN KEY (option_id) REFERENCES options (id)
 );
 
 -- migrate:down

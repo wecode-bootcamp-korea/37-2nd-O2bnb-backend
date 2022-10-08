@@ -20,5 +20,4 @@ router.use('/likes', likeRouter);
 router.use('/reviews', reviewRouter);
 router.use('/book', bookRouter);
 
-
 module.exports = router;

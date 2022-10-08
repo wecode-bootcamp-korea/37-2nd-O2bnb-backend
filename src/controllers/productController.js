@@ -36,10 +36,32 @@ const getProductDetail = catchAsync(async (req, res) => {
     return res.status(200).json({ message : PriceFilter });
   })
 
+const productSearch = catchAsync(async (req, res) => {
+    
+    const userId = req.userId;
 
-  module.exports = {
+    const keyword = req.query.keyword;
+
+    const products = await productService.productNameSearch(keyword)
+
+    return res.status(200).json({ message : products })
+}) 
+
+const productNameSearch = catchAsync(async (req, res) => {
+
+    
+    const keyword = req.query.keyword;
+
+    const products = await productService.productNameSearch(keyword)
+
+    return res.status(200).json({ message : products })
+
+}) 
+
+module.exports = {
     getProducts,
     getProductDetail,
-    getPriceFilter
+    getPriceFilter,
+    productSearch,
+    productNameSearch
 }
-

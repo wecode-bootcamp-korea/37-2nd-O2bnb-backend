@@ -123,15 +123,8 @@ const getPriceFilter = async (userId, lowprice, highprice) => {
     const result = await dataSource.query(`
         SELECT 
             p.id, 
-            p.name,
-            p.price, 
-            p.address, 
-            CASE WHEN l.user_id = ?
-                THEN 
-                    1 
-                ELSE 
-                    0 END AS likeCheck, 
-            JSON_ARRAYAGG(i.image_url) AS image_url 
+            p.name, 
+            p.address 
         FROM 
             products p 
         LEFT JOIN 
@@ -158,9 +151,30 @@ const getPriceFilter = async (userId, lowprice, highprice) => {
           }
     })
 
+    
     return result
 
-  };
+};
+
+const productNameSearch = async (keyword) => {
+
+    const result = await dataSource.query(`
+        SELECT 
+            p.id, 
+            p.name, 
+            p.address 
+        FROM 
+            products p 
+        WHERE 
+            p.address like '%${keyword}%' OR 
+            p.name like '%${keyword}%' `
+
+    )
+
+    return result
+
+};
+
 
 
 module.exports = { 
@@ -169,5 +183,6 @@ module.exports = {
     getProductOption,
     getAvailableDate,
     getHostInfo,
-    getPriceFilter
+    getPriceFilter,
+    productNameSearch
 }

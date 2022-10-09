@@ -44,7 +44,7 @@ describe("Sign Up", () => {
       .send({ email: "wecode001@gmail.com", password: "password001@" })
       .expect(201)
       .expect({message : "success"});
-  });
+  })
 
   test("FAILED: duplicated email", async () => {
     await request(app)

@@ -5,23 +5,12 @@ const getProductDetail = async (userId, productId) => {
     const [result] = await dataSource.query(`
         SELECT 
             p.*,  
-            CASE WHEN l.user_id = ?
-                THEN 
-                    1 
-                ELSE 
-                    0 END AS likeCheck, 
+            CASE WHEN l.user_id = ? THEN 1 ELSE 0 END AS likeCheck, 
             JSON_ARRAYAGG(i.image_url) AS image_url 
         FROM 
             products p 
-        LEFT JOIN 
-            likes l 
-        ON 
-            p.id = l.product_id AND
-            l.user_id = ?
-        JOIN 
-            product_images i
-        ON
-            i.product_id = p.id 
+        LEFT JOIN likes l ON p.id = l.product_id AND l.user_id = ?
+        JOIN product_images i ON i.product_id = p.id 
         GROUP BY 
             p.id 
         HAVING 

@@ -31,9 +31,19 @@ const getProducts = async (userId, category) => {
         GROUP BY 
             p.id ` + tmp
     )
+    result.map(el => {
+        if(typeof el.image_url == "string"){
+            el.image_url = el.image_url.replace("[",'');
+            el.image_url = el.image_url.replace("]",'');
+            el.image_url = el.image_url.replace(/"/g,'');
+            el.image_url = el.image_url.replace(/ /g,'');
+            el.image_url = el.image_url.split(",");
+          }
+    })
+    
 
     return result
-  
+
   };
 
   module.exports = { 

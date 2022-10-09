@@ -41,7 +41,6 @@ const getProducts = async (userId, category) => {
           }
     })
     
-
     return result
 
   };

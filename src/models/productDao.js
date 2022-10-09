@@ -16,7 +16,18 @@ const getMap = async (keyword) => {
             products 
         ` + tmp
     )
+    result.map(el => {
+        if(typeof el.image_url == "string"){
+            el.image_url = el.image_url.replace("[",'');
+            el.image_url = el.image_url.replace("]",'');
+            el.image_url = el.image_url.replace(/"/g,'');
+            el.image_url = el.image_url.replace(/ /g,'');
+            el.image_url = el.image_url.split(",");
+          }
+    })
 
+    console.log(result)
+    
     return result
 
   };

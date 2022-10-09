@@ -1,7 +1,6 @@
 const request = require("supertest");
 
 const { createApp } = require("../app");
-
 const dataSource = require("../src/models/dataSource");
 
 describe("Sign Up", () => {

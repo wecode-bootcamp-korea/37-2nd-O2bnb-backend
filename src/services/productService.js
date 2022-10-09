@@ -17,7 +17,17 @@ const getProductDetail = async (userId, productId) => {
     return product;
 }
 
+const getPriceFilter = async (userId, lowprice, highprice) => {
+
+    const PriceFilter = await productDao.getPriceFilter(userId, lowprice, highprice);
+
+    return PriceFilter;
+}
+
+
 module.exports = { 
     getProducts,
-    getProductDetail
+    getProductDetail,
+    getPriceFilter
 }
+

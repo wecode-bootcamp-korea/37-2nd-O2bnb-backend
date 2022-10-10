@@ -2,6 +2,7 @@ const dataSource = require('./dataSource')
 
 const getMap = async (keyword) => {
     let tmp = "";
+    console.log(userId, category)
 
     if (keyword != "all") tmp = `WHERE address like '%${keyword}%'`
 
@@ -25,8 +26,6 @@ const getMap = async (keyword) => {
             el.image_url = el.image_url.split(",");
           }
     })
-
-    console.log(result)
     
     return result
 

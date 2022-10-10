@@ -29,6 +29,8 @@ const getProducts = async (userId, category) => {
             el.image_url = el.image_url.split(",");
           }
     })
+
+    console.log(result)
     
     return result
 

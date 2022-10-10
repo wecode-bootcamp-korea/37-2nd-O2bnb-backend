@@ -3,6 +3,7 @@ const key = process.env.KEY;
 
 
 const validToken = async(req, res, next) =>{
+    try{
     const userToken = req.header("authorization");
     if( !userToken ) return res.status(400).json({message : "KEY_ERROR" });
     const decoded = jwt.verify(userToken, key);
@@ -10,6 +11,10 @@ const validToken = async(req, res, next) =>{
     req.userId = user_id;
 
     return next();
+    }
+    catch(err){
+        throw err;
+    }
 }
 
 module.exports = {

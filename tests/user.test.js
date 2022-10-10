@@ -30,7 +30,7 @@ describe("Sign Up", () => {
   test("FAILED: TOKEN DOESN'T EXIST", async () => {
     // supertest의 request를 활용하여 app에 테스트용 request를 보냅니다.
     await request(app)
-      .get("/product/all") // HTTP Method, 엔드포인트 주소를 작성합니다.
+      .get("/product/detail/4") // HTTP Method, 엔드포인트 주소를 작성합니다.
       .set('Authorization', 'asdf')
       .expect(400) // expect()로 예상되는 statusCode, response를 넣어 테스트할 수 있습니다.
       .expect({ message: "KEY_ERROR" });

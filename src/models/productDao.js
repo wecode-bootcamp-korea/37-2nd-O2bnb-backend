@@ -2,6 +2,7 @@ const dataSource = require('./dataSource')
 
 const getProducts = async (userId, category) => {
     let tmp = "";
+    console.log(userId, category)
 
     if (category != "all") tmp = `HAVING p.address like '%${category}%'`
 
@@ -29,8 +30,6 @@ const getProducts = async (userId, category) => {
             el.image_url = el.image_url.split(",");
           }
     })
-
-    console.log(result)
     
     return result
 

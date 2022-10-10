@@ -6,7 +6,7 @@ const request = require("supertest");
 // supertest의 request에 app을 담아 활용하기 위해 createApp 함수를 불러옵니다.
 const { createApp } = require("../app");
 // DB와의 커넥션을 위해 DataSource 객체를 불러옵니다.
-const { dataSource } = require("../src/models/dataSource");
+const dataSource = require("../src/models/dataSource");
 
 describe("Sign Up", () => {
   let app;

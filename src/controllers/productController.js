@@ -23,10 +23,25 @@ const getProductDetail = catchAsync(async (req, res) => {
     return res.status(200).json({ message : productInfo });
 })
 
+const getProducts = catchAsync(async (req, res) => {
+  const userId = req.userId;
+
+  const category = req.params.category;
+
+  const products = await productService.getProducts(userId, category)
+
+  return res.status(200).json({ message : products })
+  
+})
 
 
 
-  module.exports = {
-    getMap,
-    getProductDetail
+
+module.exports = {
+  getMap,
+  getProductDetail,
+  getProducts
 }
+
+
+

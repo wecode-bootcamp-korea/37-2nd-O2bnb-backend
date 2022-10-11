@@ -13,7 +13,11 @@ describe("Sign Up", () => {
     await dataSource.initialize();
   });
 
+<<<<<<< HEAD
   test("FAIL :INVALID_TOKEN", async () => {
+=======
+  test("FAIL : INVALID_TOKEN", async () => {
+>>>>>>> feature/getProducts
 
     await request(app)
       .post("/product/all") 

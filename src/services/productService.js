@@ -17,7 +17,17 @@ const getProductDetail = async (userId, productId) => {
     return product;
 }
 
+const getProducts = async (userId, category) => {
+
+    const productInfo = await productDao.getProducts(userId, category);
+
+    return productInfo
+}
+
+
 module.exports = { 
     getMap,
-    getProductDetail
+    getProductDetail,
+    getProducts
 }
+

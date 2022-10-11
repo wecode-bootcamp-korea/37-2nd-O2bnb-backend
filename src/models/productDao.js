@@ -22,7 +22,6 @@ const getMap = async (keyword) => {
 
 const getProducts = async (userId, category) => {
     let tmp = "";
-    console.log(userId, category)
 
     if (category != "all") tmp = `HAVING p.address like '%${category}%'`
 
@@ -182,6 +181,26 @@ const getHostInfo = async (productId) => {
 
 };
 
+const productNameSearch = async (keyword) => {
+
+    console.log(keyword);
+
+    const result = await dataSource.query(`
+        SELECT 
+            p.id, 
+            p.name, 
+            p.address 
+        FROM 
+            products p 
+        WHERE 
+            p.address like '%${keyword}%' OR 
+            p.name like '%${keyword}%' `
+
+    )
+    return result
+
+};
+
 
 module.exports = { 
     getMap,
@@ -190,5 +209,6 @@ module.exports = {
     getAvailableDate,
     getHostInfo,
     getProducts,
-    productSearch
+    productSearch,
+    productNameSearch
 }

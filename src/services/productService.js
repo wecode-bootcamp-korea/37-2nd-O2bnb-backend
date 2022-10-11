@@ -29,10 +29,16 @@ const productSearch = async (userId, keyword) => {
     return await productDao.productSearch(userId, keyword);
 }
 
+const productNameSearch = async (keyword) => {
+
+    return await productDao.productNameSearch(keyword);
+}
+
 module.exports = { 
     getMap,
     getProductDetail,
     getProducts,
-    productSearch
+    productSearch,
+    productNameSearch
 }
 

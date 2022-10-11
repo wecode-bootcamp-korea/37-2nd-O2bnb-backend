@@ -5,7 +5,8 @@ const router = express.Router();
 
 router.get('/map/:keyword', validToken, productController.getMap);
 router.get('/detail/:productId', validToken, productController.getProductDetail);
-router.get('/:category', validToken,productController.getProducts);
+router.get('/searchName', productController.productNameSearch);
 router.get('/search/:keyword', productController.productSearch);
+router.get('/:category', validToken,productController.getProducts);
 
 module.exports = router;

@@ -1,7 +1,7 @@
 -- migrate:up
 CREATE TABLE users(
   id INT NOT NULL AUTO_INCREMENT,
-  social_id INT,
+  social_id BIGINT,
   email VARCHAR(200),
   password VARCHAR(200),
   phone_number VARCHAR(50),

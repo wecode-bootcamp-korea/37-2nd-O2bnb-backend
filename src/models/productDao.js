@@ -63,10 +63,29 @@ const getAvailableDate = async (productId) => {
 
 };
 
+const getHostInfo = async (productId) => {
+    const [result] = await dataSource.query(`
+        SELECT 
+            u.name, 
+            u.id, 
+            u.created_at, 
+            h.grade,
+            h.content
+        FROM 
+            users u 
+        JOIN hosts h ON h.user_id = u.id 
+        JOIN products p ON p.host_id = h.id 
+        WHERE p.id = ?`, [productId]
+  )
+
+  return result
+
+};
 
 
 module.exports = { 
     getProductDetail,
     getProductOption,
-    getAvailableDate
+    getAvailableDate,
+    getHostInfo
 }

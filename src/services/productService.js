@@ -24,10 +24,15 @@ const getProducts = async (userId, category) => {
     return productInfo
 }
 
+const productSearch = async (userId, keyword) => {
+
+    return await productDao.productSearch(userId, keyword);
+}
 
 module.exports = { 
     getMap,
     getProductDetail,
-    getProducts
+    getProducts,
+    productSearch
 }
 

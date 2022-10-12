@@ -1,9 +1,7 @@
 const express = require('express')
-
+const router = express.Router();
 const likeRouter = require('./likeRouter');
 
 router.use('/likes', likeRouter);
-
-const router = express.Router();
 
 module.exports = router;

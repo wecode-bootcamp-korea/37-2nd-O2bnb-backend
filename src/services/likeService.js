@@ -5,7 +5,7 @@ const getLikes = async (userId) => {
 }
 
 const addLikes = async (userId, productId) => {
-  return await likeDao.addLikes(userId, productId);
+  return await likeDao.createLikes(userId, productId);
 }
 
 const deleteLikes = async (userId, productId) => {

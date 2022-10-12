@@ -11,7 +11,9 @@ const userRouter = require('./userRouter');
 router.use('/user', userRouter);
 
 const userRouter = require('./userRouter');
+const likeRouter = require('./likeRouter');
 
 router.use('/user', userRouter);
+router.use('/likes', likeRouter);
 
 module.exports = router;

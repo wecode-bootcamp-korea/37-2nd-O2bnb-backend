@@ -1,9 +1,9 @@
 const dataSource = require('./dataSource')
 
-const getMap = async (keyword) => {
+const getMap = async (category) => {
     let tmp = "";
 
-    if (keyword != "all") tmp = `WHERE address like '%${keyword}%'`
+    if (category != "all") tmp = `WHERE address like '%${category}%'`
 
     const result = await dataSource.query(`
         SELECT 
@@ -201,6 +201,44 @@ const productNameSearch = async (keyword) => {
 
 };
 
+const getPriceFilter = async (userId, lowprice, highprice) => {
+
+    const result = await dataSource.query(`
+        SELECT 
+            p.id, 
+            p.name,
+            p.price, 
+            p.address, 
+            CASE WHEN l.user_id = ?
+                THEN 
+                    1 
+                ELSE 
+                    0 END AS likeCheck,
+            AVG(r.clean_star+r.address_star+r.price_star)/3 AS reviewStar,         
+            JSON_ARRAYAGG(i.image_url) AS image_url 
+        FROM 
+            products p 
+        LEFT JOIN likes l ON p.id = l.product_id AND l.user_id = ?
+        JOIN product_images i ON i.product_id = p.id
+        LEFT JOIN reviews r ON r.product_id = p.id 
+        GROUP BY p.id 
+        HAVING p.price >= ${lowprice} and p.price <= ${highprice}`,[userId, userId]
+    )
+
+    result.map(el =>{
+        if(typeof el.image_url == "string"){
+            el.image_url = el.image_url.replace("[",'');
+            el.image_url = el.image_url.replace("]",'');
+            el.image_url = el.image_url.replace(/"/g,'');
+            el.image_url = el.image_url.replace(/ /g,'');
+            el.image_url = el.image_url.split(",");
+          }
+    })
+
+    return result
+
+  };
+
 
 module.exports = { 
     getMap,
@@ -210,5 +248,6 @@ module.exports = {
     getHostInfo,
     getProducts,
     productSearch,
-    productNameSearch
+    productNameSearch,
+    getPriceFilter
 }

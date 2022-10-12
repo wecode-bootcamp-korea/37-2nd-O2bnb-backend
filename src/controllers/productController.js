@@ -4,9 +4,9 @@ const { catchAsync } = require('../utils/error')
 
 const getMap = catchAsync(async (req, res) => {
 
-    const keyword = req.params.keyword;
+    const category = req.params.category;
 
-    const mapInfo = await productService.getMap(keyword);
+    const mapInfo = await productService.getMap(category);
 
     return res.status(200).json({ message : mapInfo });
 })
@@ -55,11 +55,25 @@ const productNameSearch = catchAsync(async (req, res) => {
 }) 
 
 
+const getPriceFilter = catchAsync(async (req, res) => {
+
+  const userId = req.userId;
+
+  const { lowprice, highprice } = req.query;
+
+  const PriceFilter = await productService.getPriceFilter(userId, lowprice, highprice);
+
+
+  return res.status(200).json({ message : PriceFilter });
+})
+
+
 module.exports = {
   getMap,
   getProductDetail,
   getProducts,
   productSearch,
-  productNameSearch
+  productNameSearch,
+  getPriceFilter
 }
 

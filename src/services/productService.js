@@ -1,8 +1,8 @@
 const { productDao } = require('../models');
 
-const getMap = async (keyword) => {
+const getMap = async (category) => {
 
-    const product = await productDao.getMap(keyword);
+    const product = await productDao.getMap(category);
 
     return product;
 }
@@ -34,11 +34,16 @@ const productNameSearch = async (keyword) => {
     return await productDao.productNameSearch(keyword);
 }
 
+const getPriceFilter = async (userId, lowprice, highprice) => {
+
+    return await productDao.getPriceFilter(userId, lowprice, highprice);
+}
 module.exports = { 
     getMap,
     getProductDetail,
     getProducts,
     productSearch,
-    productNameSearch
+    productNameSearch,
+    getPriceFilter
 }
 

@@ -1,10 +1,10 @@
 const dataSource = require('./dataSource')
 
-const getMap = async (keyword) => {
+const getMap = async (category) => {
     let tmp = "";
     console.log(userId, category)
 
-    if (keyword != "all") tmp = `WHERE address like '%${keyword}%'`
+    if (category != "all") tmp = `WHERE address like '%${category}%'`
 
     const result = await dataSource.query(`
         SELECT 

@@ -169,12 +169,19 @@ const getHostInfo = async (productId) => {
             u.id, 
             u.created_at, 
             h.grade,
-            h.content
+            h.content,
+            (SELECT 
+                    count(*) 
+            FROM 
+                reviews r 
+            JOIN products p ON p.id = r.product_id 
+            JOIN hosts h ON h.id = p.host_id 
+            WHERE h.id = (SELECT products.host_id from products where products.id = ?)) as reviewCount
         FROM 
             users u 
         JOIN hosts h ON h.user_id = u.id 
         JOIN products p ON p.host_id = h.id 
-        WHERE p.id = ?`, [productId]
+        WHERE p.id = ?`, [productId, productId]
   )
 
   return result

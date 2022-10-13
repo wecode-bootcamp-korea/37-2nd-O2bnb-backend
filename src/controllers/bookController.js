@@ -2,7 +2,7 @@ const { bookService } = require('../services');
 const { catchAsync } = require('../utils/error');
 
 const makeBooking = catchAsync(async(req, res) => {
-  const userId = 1;
+  const userId = req.userId;
   const productId = req.params.productId;
   const { price, guests, startDate, endDate } = req.body;
 
@@ -18,27 +18,24 @@ const makeBooking = catchAsync(async(req, res) => {
 })
 
 const getAllBookings = catchAsync(async(req, res) => {
-  const userId = 1;
+  const userId = req.userId;
   const bookings = await bookService.getAllBookings(userId);
 
   return res.status(200).json({ data : bookings });
 })
 
 const checkBookingInfo = catchAsync(async(req, res) => {
-  const userId = 1;
+  const userId = req.userId;
   const bookingInfo = await bookService.checkBookingInfo(userId);
   
   return res.status(200).json({ data : bookingInfo });
 })
 
 const confirmBooking = catchAsync(async(req, res) => {
-  const userId = 1;
-  // const productId = req.params.productId;
+  const userId = req.userId;
+
   const { price, guests, startDate, endDate } = req.body;
-  console.log(price)
-  console.log(guests)
-  console.log(startDate)
-  console.log(endDate)
+
   if ( !price || !guests || !startDate || !endDate ) {
     const error = new Error('KEY_ERROR');
     error.statusCode = 400;
@@ -51,7 +48,7 @@ const confirmBooking = catchAsync(async(req, res) => {
 })
 
 const cancelBooking = catchAsync(async(req, res) => {
-  const userId = 1;
+  const userId = req.userId;
   const productId = req.params.productId;
   const startDate = req.body['start_date'];
   const endDate = req.body['end_date'];
@@ -68,7 +65,7 @@ const cancelBooking = catchAsync(async(req, res) => {
 })
 
 const completeBooking = catchAsync(async(req, res) => {
-  const userId = 1;
+  const userId = req.userId;
   const orderedbooking = await bookService.completeBooking(userId);
 
   return res.status(200).json({ data : orderedbooking });

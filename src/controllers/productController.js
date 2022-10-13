@@ -48,6 +48,8 @@ const productNameSearch = catchAsync(async (req, res) => {
 
   const keyword = req.query.keyword;
 
+  if(keyword == "") return res.status(400).json({message : "KEYWORD_DOESNT_EXIST" });
+
   const products = await productService.productNameSearch(keyword)
 
   return res.status(200).json({ message : products })

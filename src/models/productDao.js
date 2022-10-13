@@ -21,6 +21,9 @@ const getMap = async (category) => {
 }
 
 const getProducts = async (userId, category) => {
+
+    if (!userId) userId = 0;
+
     let tmp = "";
 
     if (category != "all") tmp = `HAVING p.address like '%${category}%'`
@@ -31,15 +34,16 @@ const getProducts = async (userId, category) => {
             p.name, 
             p.price,
             p.address,
-            CASE WHEN l.user_id = ${userId} THEN 1 ELSE 0 END AS checkLike,
-            AVG(r.clean_star+r.address_star+r.price_star)/3 AS reviewStar,
-            JSON_ARRAYAGG(i.image_url) AS image_url
-        FROM products p 
-        LEFT JOIN likes l ON l.product_id = p.id AND l.user_id = ${userId}
-        LEFT JOIN reviews r ON r.product_id = p.id 
+            CASE WHEN l.user_id = ? THEN 1 ELSE 0 END AS checkLike,
+            JSON_ARRAYAGG(i.image_url) AS image_url,
+            (SELECT AVG(clean_star + address_star + price_star)/3 as reviewStar FROM reviews WHERE product_id = p.id) as reviewStar
+        FROM 
+            products p 
+        LEFT JOIN likes l ON l.product_id = p.id AND l.user_id = ?
         JOIN product_images i ON i.product_id = p.id 
-        GROUP BY p.id ` + tmp
+        GROUP BY p.id ` + tmp,[userId, userId]
     )
+
     result.map(el =>{
         if(typeof el.image_url == "string"){
             el.image_url = el.image_url.replace("[",'');
@@ -53,8 +57,10 @@ const getProducts = async (userId, category) => {
     return result;
 
 }
-const productSearch = async (userId, keyword) => {
 
+
+const productSearch = async (userId, keyword) => {
+    if (!userId) userId = 0;
     const result = await dataSource.query(`
         SELECT 
             p.id, 
@@ -100,6 +106,7 @@ const productSearch = async (userId, keyword) => {
   };
 
 const getProductDetail = async (userId, productId) => {
+    if (!userId) userId = 0;
 
     const [result] = await dataSource.query(`
         SELECT 
@@ -190,8 +197,6 @@ const getHostInfo = async (productId) => {
 
 const productNameSearch = async (keyword) => {
 
-    console.log(keyword);
-
     const result = await dataSource.query(`
         SELECT 
             p.id, 
@@ -209,6 +214,7 @@ const productNameSearch = async (keyword) => {
 };
 
 const getPriceFilter = async (userId, lowprice, highprice) => {
+    if (!userId) userId = 0;
 
     const result = await dataSource.query(`
         SELECT 

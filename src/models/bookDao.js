@@ -36,6 +36,7 @@ const getAllBookings = async(userId) => {
 };
 
 const checkBookingInfo = async(userId) => {
+
   return await dataSource.query(
     `SELECT
       bookings.price as totalPrice,
@@ -57,19 +58,18 @@ const checkBookingInfo = async(userId) => {
   )
 }
 
-const checkAvailableDate = async(productId, startDate, endDate) => {
+const checkAvailableDate = async(startDate, endDate) => {
   const result = await dataSource.query(
   `SELECT EXISTS (
     SELECT *
     FROM bookings
-    WHERE
+    WHERE booking_status_id = 1 AND
       (? BETWEEN start_date and DATE_SUB(end_date, INTERVAL 1 DAY)
       OR ? BETWEEN DATE_ADD(start_date, INTERVAL 1 DAY) and end_date)
-      AND booking_status_id = 1
       ORDER BY bookings.created_at DESC
       LIMIT 1
   ) AS trueORfalse
-    `, [productId, startDate, endDate]
+    `, [startDate, endDate]
   )
 
   return result[0].trueORfalse;
@@ -93,6 +93,7 @@ const checkValidBooking = async(price, guests, startDate, endDate) => {
 }
 
 const confirmBooking = async(userId, price, guests, startDate, endDate) => {
+  console.log(startDate)
   return await dataSource.query(
     `UPDATE bookings
     SET booking_status_id = 1
@@ -101,7 +102,6 @@ const confirmBooking = async(userId, price, guests, startDate, endDate) => {
       AND guest_count = ?
       AND start_date = ?
       AND end_date = ?
-      AND booking_status_id = 3
     `, [userId, price, guests, startDate, endDate]
   );
 };

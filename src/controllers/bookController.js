@@ -6,6 +6,8 @@ const makeBooking = catchAsync(async(req, res) => {
   const productId = req.params.productId;
   const { price, guests, startDate, endDate } = req.body;
 
+  console.log(productId, price, guests, startDate, endDate)
+
   if ( !price || !guests || !startDate || !endDate ) {
     const error = new Error('KEY_ERROR');
     error.statusCode = 400;
@@ -27,7 +29,7 @@ const getAllBookings = catchAsync(async(req, res) => {
 const checkBookingInfo = catchAsync(async(req, res) => {
   const userId = req.userId;
   const bookingInfo = await bookService.checkBookingInfo(userId);
-  
+  console.log("bookingINfo"+ JSON.stringify(bookingInfo))
   return res.status(200).json({ data : bookingInfo });
 })
 

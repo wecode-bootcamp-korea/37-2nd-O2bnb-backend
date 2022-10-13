@@ -12,13 +12,13 @@ const getLikes = async (userId) => {
             p.guest_count,
             p.bed_count,
             p.bathroom_count,
-            AVG(r.address_star+r.clean_star+r.price_star)/3,
+            AVG(r.address_star+r.clean_star+r.price_star)/3 as reviewStar,
             JSON_ARRAYAGG(i.image_url) as image_url
         FROM 
             products p 
-        JOIN likes l ON l.product_id = p.id AND l.user_id = 6
+        JOIN likes l ON l.product_id = p.id AND l.user_id = ?
         JOIN product_images i ON i.product_id = p.id 
-        JOIN reviews r ON r.product_id = p.id
+        LEFT JOIN reviews r ON r.product_id = p.id
         GROUP BY 
             p.id
       `,[userId]

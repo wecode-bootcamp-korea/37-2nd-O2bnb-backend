@@ -18,7 +18,7 @@ const getUserInfo = async (userId) => {
 
 }
 
-const getUserBySocialId = async (socialId) => {
+const getUserByemail = async (email) => {
 
 	const [user] = await dataSource.query(`
 		SELECT 
@@ -28,7 +28,7 @@ const getUserBySocialId = async (socialId) => {
             birth,
             profile_image
 		FROM users
-		WHERE social_id=?`, [socialId]
+		WHERE email=?`, [email]
 	)
 
     return user;
@@ -52,6 +52,6 @@ const signUp = async (socialId, email, name, birth, profileImage) => {
 
 module.exports = { 
     getUserInfo,
-    getUserBySocialId,
+    getUserByemail,
     signUp
 }

@@ -3,6 +3,7 @@ const cors = require("cors");
 const morgan = require("morgan");
 const { globalErrorHandler } = require('./src/utils/error');    
 const routes = require("./src/routers");
+const path = require('path');
 
 const createApp = () => {
   const app = express();
@@ -10,6 +11,8 @@ const createApp = () => {
   app.use(express.json());
   app.use(cors());
   app.use(morgan("dev"));
+
+  app.use(express.static(path.join(__dirname, './build')));
 
   app.get('/ping', function (req, res, next) {
     res.json({message : 'pong'})

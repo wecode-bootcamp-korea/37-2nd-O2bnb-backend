@@ -32,5 +32,8 @@
     "mysql2": "^2.3.3",
     "supertest": "^6.3.0",
     "typeorm": "^0.3.10"
+  },
+  "devDependencies": {
+    "supertest": "^6.3.0"
   }
 }

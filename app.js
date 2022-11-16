@@ -11,6 +11,8 @@ const createApp = () => {
   app.use(cors());
   app.use(morgan("dev"));
 
+  app.use(express.static(path.join(__dirname, './build')));
+
   app.get('/ping', function (req, res, next) {
     res.json({message : 'pong'})
   })

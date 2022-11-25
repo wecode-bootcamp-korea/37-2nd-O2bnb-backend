@@ -6,8 +6,6 @@ const makeBooking = catchAsync(async(req, res) => {
   const productId = req.params.productId;
   const { price, guests, startDate, endDate } = req.body;
 
-  console.log(productId, price, guests, startDate, endDate)
-
   if ( !price || !guests || !startDate || !endDate ) {
     const error = new Error('KEY_ERROR');
     error.statusCode = 400;
@@ -19,10 +17,17 @@ const makeBooking = catchAsync(async(req, res) => {
   res.status(201).json({ message : "PLEASE_PROCEED_PAYMENT" });
 })
 
+const getAllBookings = catchAsync(async(req, res) => {
+  const userId = req.userId;
+  const bookings = await bookService.getAllBookings(userId);
+
+  return res.status(200).json({ data : bookings });
+})
+
 const checkBookingInfo = catchAsync(async(req, res) => {
   const userId = req.userId;
   const bookingInfo = await bookService.checkBookingInfo(userId);
-  console.log("bookingINfo"+ JSON.stringify(bookingInfo))
+  
   return res.status(200).json({ data : bookingInfo });
 })
 
@@ -39,6 +44,7 @@ const confirmBooking = catchAsync(async(req, res) => {
   await bookService.confirmBooking(userId, price, guests, startDate, endDate);
 
   res.status(200).json({ message : 'BOOKING_CONFIRMED!' });
+
 })
 
 const completeBooking = catchAsync(async(req, res) => {
@@ -46,15 +52,8 @@ const completeBooking = catchAsync(async(req, res) => {
   const orderedbooking = await bookService.completeBooking(userId);
 
   return res.status(200).json({ data : orderedbooking });
+
 })
-
-const getAllBookings = catchAsync(async(req, res) => {
-  const userId = req.userId;
-  const bookings = await bookService.getAllBookings(userId);
-
-  return res.status(200).json({ data : bookings });
-})
-
 const cancelBooking = catchAsync(async(req, res) => {
   const userId = req.userId;
   const productId = req.params.productId;
@@ -70,7 +69,9 @@ const cancelBooking = catchAsync(async(req, res) => {
   await bookService.cancelBooking(userId, productId, startDate, endDate);
 
   res.status(200).json({ message : 'BOOKING_CANCELED' });
+  
 })
+
 
 module.exports = {
   makeBooking,

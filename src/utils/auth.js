@@ -36,5 +36,6 @@ const validTokenNull = async(req, res, next) =>{
     }
 }
 module.exports = {
-    validToken, validTokenNull
+    validToken, 
+    validTokenNull
 }

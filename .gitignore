@@ -11,3 +11,5 @@ db/schema.sql
 db/.DS_Store
 
 db/migrations/.DS_Store
+
+.env.test

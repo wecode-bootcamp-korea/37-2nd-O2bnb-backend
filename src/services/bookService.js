@@ -43,13 +43,6 @@ const cancelBooking = async(userId, productId, startDate, endDate) => {
   return await bookDao.cancelBooking(userId, productId, startDate, endDate);
 };
 
-<<<<<<< HEAD
-=======
-const completeBooking = async(userId) => {
-  return await bookDao.completeBooking(userId);
-};
-
->>>>>>> 8ed8f36... MODIFY : POST, GET, PATCH book API and RESOLVE conflict3
 module.exports = {
   makeBooking,
   getAllBookings,

@@ -2,11 +2,10 @@ const { bookService } = require('../services');
 const { catchAsync } = require('../utils/error');
 
 const makeBooking = catchAsync(async(req, res) => {
-  const userId = req.userId;
+  // const userId = req.userId;
+  const userId = 4;
   const productId = req.params.productId;
   const { price, guests, startDate, endDate } = req.body;
-
-  console.log(productId, price, guests, startDate, endDate)
 
   if ( !price || !guests || !startDate || !endDate ) {
     const error = new Error('KEY_ERROR');
@@ -20,7 +19,7 @@ const makeBooking = catchAsync(async(req, res) => {
 })
 
 const checkBookingInfo = catchAsync(async(req, res) => {
-  const userId = req.userId;
+  const userId = 1;
   const bookingInfo = await bookService.checkBookingInfo(userId);
   console.log("bookingINfo"+ JSON.stringify(bookingInfo))
   return res.status(200).json({ data : bookingInfo });
@@ -49,9 +48,10 @@ const completeBooking = catchAsync(async(req, res) => {
 })
 
 const getAllBookings = catchAsync(async(req, res) => {
-  const userId = req.userId;
+  // const userId = req.userId;
+  const userId = 1;
   const bookings = await bookService.getAllBookings(userId);
-
+  
   return res.status(200).json({ data : bookings });
 })
 
@@ -72,11 +72,48 @@ const cancelBooking = catchAsync(async(req, res) => {
   res.status(200).json({ message : 'BOOKING_CANCELED' });
 })
 
+const ckeckDates = catchAsync(async(req, res) => {
+  const productId = req.params.productId;
+
+  if ( !productId ) {
+    const error = new Error('KEY_ERROR');
+    error.statusCode = 400;
+    throw error;
+  }
+
+  const data = await bookService.checkDates(productId);
+
+  const checkIn = new Date(data['start_date']);
+  const checkOut = new Date(data['end_date']);
+
+  const makeArray = (start, end) => {
+    let arr = [];
+    
+    while(start <= end) {
+      let yyyy = start.getFullYear();
+      let mm = start.getMonth() + 1;
+      mm = mm < 10 ? '0' + mm : mm;
+      let dd = start.getDate();
+      dd = dd < 10 ? '0' + dd : dd;
+      
+      arr.push(yyyy + '-' + mm + '-' + dd);
+      start.setDate(start.getDate() + 1)
+    }
+    
+    return arr;
+  }
+
+  const result = makeArray(checkIn, checkOut);
+  
+  res.status(200).json({ message : result });
+})
+
 module.exports = {
   makeBooking,
   getAllBookings,
   checkBookingInfo,
   confirmBooking,
   cancelBooking,
-  completeBooking
+  completeBooking,
+  ckeckDates
 }

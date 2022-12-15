@@ -43,11 +43,16 @@ const cancelBooking = async(userId, productId, startDate, endDate) => {
   return await bookDao.cancelBooking(userId, productId, startDate, endDate);
 };
 
+const checkDates = async(productId) => {
+  return await bookDao.checkDates(productId);
+}
+
 module.exports = {
   makeBooking,
   getAllBookings,
   checkBookingInfo,
   confirmBooking,
   cancelBooking,
-  completeBooking
+  completeBooking,
+  checkDates
 }

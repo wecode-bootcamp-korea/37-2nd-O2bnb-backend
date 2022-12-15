@@ -148,7 +148,21 @@ const checkBookingList = async(userId, productId, startDate, endDate) => {
   );
 
   return result[0].trueORfalse;
-}; 
+};
+
+// 조건에 product_id, booking_status_id 추가 예정
+const checkDates = async(productId) => {
+  const result = await dataSource.query(
+    `SELECT
+      start_date,
+      end_date
+    FROM bookings
+    WHERE product_id = ?
+    `, [productId]
+  );
+
+  return result[0];
+}
 
 module.exports = {
   makeBooking,
@@ -159,5 +173,6 @@ module.exports = {
   checkBookingList,
   confirmBooking,
   cancelBooking,
-  completeBooking
+  completeBooking,
+  checkDates
 }

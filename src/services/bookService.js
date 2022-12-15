@@ -11,8 +11,7 @@ const checkBookingInfo = async(userId) => {
 const confirmBooking = async(userId, price, guests, startDate, endDate) => {
   const checkAvailableDate = await bookDao.checkAvailableDate(startDate, endDate);
   const checkValidBooking = await bookDao.checkValidBooking(price, guests, startDate, endDate);
-  console.log(checkAvailableDate)
-  console.log(checkValidBooking)
+  
   // if ( checkAvailableDate === "1" || checkValidBooking === "0" ) {
   //   const error = new Error('NOT AVAILABLE!_CHECK_YOUR_BOOKING_REQUEST')
   //   error.statusCode = 404;

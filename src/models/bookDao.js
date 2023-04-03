@@ -1,6 +1,6 @@
 const dataSource = require('./dataSource')
 
-const makeBooking = async(userId, productId, price, guests, startDate, endDate) => {
+const makeBooking = async (userId, productId, price, guests, startDate, endDate) => {
   const result = await dataSource.query(
     `INSERT INTO bookings(
       user_id,
@@ -10,33 +10,29 @@ const makeBooking = async(userId, productId, price, guests, startDate, endDate) 
       start_date,
       end_date,
       booking_status_id
-    ) VALUES (?, ?, ?, ?, ?, ?, 3)
+    ) VALUES (?, ?, ?, ?, ?, ?, 1)
     `, [userId, productId, price, guests, startDate, endDate]
   );
-  
+
   return result;
 };
 
-const getAllBookings = async(userId) => {
-  return await dataSource.query(
+const getBookingsByHotel = async (productId) => {
+  const result = await dataSource.query(
     `SELECT
-      products.name as product_name,
-      users.name as host_name,
-      bookings.start_date,
-      bookings.end_date,
-      products.address,
-      (SELECT product_images.image_url FROM product_images JOIN products ON product_images.product_id = products.id LIMIT 1) as img
-    FROM products
-    JOIN hosts ON hosts.id = products.host_id
-    JOIN users ON users.id = hosts.user_id
-    JOIN bookings ON bookings.product_id = products.id
-    WHERE bookings.user_id = ?
-    AND bookings.booking_status_id = 1
-    `, [userId]
+      user_id,
+      start_date,
+      end_date,
+      created_at,
+      booking_status_id
+    FROM bookings
+    WHERE product_id = ?
+    `, [productId]
   );
-};
+  return result;
+}
 
-const checkBookingInfo = async(userId) => {
+const checkBookingInfo = async (userId) => {
   return await dataSource.query(
     `SELECT
       bookings.price as totalPrice,
@@ -51,22 +47,35 @@ const checkBookingInfo = async(userId) => {
     FROM bookings
     JOIN products ON products.id = bookings.product_id
     WHERE bookings.user_id = ?
-    AND bookings.booking_status_id = 3
+    AND bookings.booking_status_id = 1
     ORDER BY bookings.created_at DESC
     LIMIT 1
     `, [userId]
   )
 }
 
-const checkAvailableDate = async(startDate, endDate) => {
+const confirmBooking = async (userId, price, guests, startDate, endDate) => {
+  console.log(userId, price, guests, startDate, endDate)
+  return await dataSource.query(
+    `UPDATE bookings
+    SET booking_status_id = 1
+    WHERE user_id = ?
+    AND price = ?
+    AND guest_count = ?
+    AND start_date = ?
+    AND end_date = ?
+    `, [userId, price, guests, startDate, endDate]
+  );
+};
+
+const checkAvailableDate = async (startDate, endDate) => {
   const result = await dataSource.query(
-  `SELECT EXISTS (
+    `SELECT EXISTS (
     SELECT *
     FROM bookings
-    WHERE
+    WHERE booking_status_id = 1 AND
       (? BETWEEN start_date and DATE_SUB(end_date, INTERVAL 1 DAY)
       OR ? BETWEEN DATE_ADD(start_date, INTERVAL 1 DAY) and end_date)
-      AND booking_status_id = 1
       ORDER BY bookings.created_at DESC
       LIMIT 1
   ) AS trueORfalse
@@ -76,9 +85,9 @@ const checkAvailableDate = async(startDate, endDate) => {
   return result[0].trueORfalse;
 }
 
-const checkValidBooking = async(price, guests, startDate, endDate) => {
+const checkValidBooking = async (price, guests, startDate, endDate) => {
   const result = await dataSource.query(
-  `SELECT EXISTS (
+    `SELECT EXISTS (
     SELECT *
     FROM bookings
     WHERE price = ?
@@ -89,25 +98,44 @@ const checkValidBooking = async(price, guests, startDate, endDate) => {
   ) AS trueORfalse
     `, [price, guests, startDate, endDate]
   )
-
   return result[0].trueORfalse;
 }
 
-const confirmBooking = async(userId, price, guests, startDate, endDate) => {
+const completeBooking = async (userId) => {
   return await dataSource.query(
-    `UPDATE bookings
-    SET booking_status_id = 1
+    `SELECT
+      price,
+      guest_count,
+      start_date,
+      end_date
+    FROM bookings
     WHERE user_id = ?
-      AND price = ?
-      AND guest_count = ?
-      AND start_date = ?
-      AND end_date = ?
-      AND booking_status_id = 3
-    `, [userId, price, guests, startDate, endDate]
+    AND booking_status_id = 1
+    ORDER BY bookings.created_at DESC
+    LIMIT 1
+    `, [userId]
   );
 };
 
-const cancelBooking = async(userId, productId, startDate, endDate) => {
+const getAllBookings = async (userId) => {
+  return await dataSource.query(
+    `SELECT
+      products.name as product_name,
+      users.name as host_name,
+      bookings.start_date,
+      bookings.end_date,
+      products.address,
+      (SELECT product_images.image_url FROM product_images JOIN products ON product_images.product_id = products.id LIMIT 1) as img
+    FROM products
+    JOIN hosts ON hosts.id = products.host_id
+    JOIN users ON users.id = hosts.user_id
+    JOIN bookings ON bookings.product_id = products.id
+    WHERE bookings.user_id = ${userId} AND bookings.booking_status_id = 1
+    `
+  );
+};
+
+const cancelBooking = async (userId, productId, startDate, endDate) => {
   return await dataSource.query(
     `UPDATE bookings
     SET booking_status_id = 2
@@ -120,7 +148,7 @@ const cancelBooking = async(userId, productId, startDate, endDate) => {
   );
 };
 
-const checkBookingList = async(userId, productId, startDate, endDate) => {
+const checkBookingList = async (userId, productId, startDate, endDate) => {
   const result = await dataSource.query(
     `SELECT EXISTS (
       SELECT *
@@ -137,21 +165,6 @@ const checkBookingList = async(userId, productId, startDate, endDate) => {
   return result[0].trueORfalse;
 };
 
-const completeBooking = async(userId) => {
-  return await dataSource.query(
-    `SELECT
-      price,
-      guest_count,
-      start_date,
-      end_date
-    FROM bookings
-    WHERE user_id = ?
-    AND booking_status_id = 1
-    ORDER BY bookings.created_at DESC
-    LIMIT 1
-    `, [userId]
-  );
-};    
 
 module.exports = {
   makeBooking,
@@ -162,5 +175,6 @@ module.exports = {
   checkBookingList,
   confirmBooking,
   cancelBooking,
-  completeBooking
+  completeBooking,
+  getBookingsByHotel
 }

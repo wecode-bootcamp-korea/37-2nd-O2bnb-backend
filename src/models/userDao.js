@@ -1,38 +1,22 @@
 const dataSource = require('./dataSource')
 
-const getUserBySocialId = async (socialId) => {
+const getUserInfo = async (userId) => {
 
 	const [user] = await dataSource.query(`
-		SELECT 
-            id,
-            social_id,
+        SELECT 
+            email, 
+            birth, 
             name,
-            birth,
-            profile_image
-		FROM users
-		WHERE social_id=?`, [socialId]
+            profile_image, 
+            created_at 
+        FROM 
+            users 
+        WHERE id = ?;`, [userId]
 	)
 
     return user;
 }
 
-const createSignUp = async (socialId, email, name, birth, profileImage) => {
-
-    return await dataSource.query(`
-        INSERT INTO users (
-          social_id, email, name, birth, profile_image
-          ) VALUES (
-                  ?,
-                  ?, 
-                  ?, 
-                  ?,
-                  ?
-          )`,
-      [socialId, email, name, birth, profileImage]
-    )
-}
-
 module.exports = { 
-    getUserBySocialId,
-    createSignUp
+    getUserInfo
 }

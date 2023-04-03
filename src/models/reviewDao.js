@@ -17,7 +17,8 @@ const getReviews = async(productId) => {
   const reviewsByProduct = await dataSource.query(
     `SELECT
       @rownum:=@rownum+1 as id,
-      DATE_FORMAT(reviews.created_at, '%Y-%m') as created_at,
+      reviews.id as review_id,
+      DATE_FORMAT(reviews.created_at, '%Y-%m-%d') as created_at,
       reviews.content,
       users.name,
       users.profile_image

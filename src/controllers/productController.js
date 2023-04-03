@@ -58,6 +58,7 @@ const productNameSearch = catchAsync(async (req, res) => {
 
 }) 
 
+
 module.exports = {
     getProducts,
     getProductDetail,

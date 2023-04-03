@@ -34,7 +34,7 @@ const signIn = async (authCode) => {
     const name = socialUser.properties.nickname;
     const profileImage = socialUser.kakao_account.profile.profile_image_url;
 
-	let user = await userDao.getUserBySocialId(socialId);
+	let user = await userDao.getUserByemail(email);
     
     if(!user){
         await userDao.createSignUp(socialId, email, name, birth, profileImage);

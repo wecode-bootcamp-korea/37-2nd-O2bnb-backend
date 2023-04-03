@@ -11,6 +11,7 @@ const createApp = () => {
   app.use(cors());
   app.use(morgan("dev"));
 
+
   app.get('/ping', function (req, res, next) {
     res.json({message : 'pong'})
   })

@@ -1,4 +1,4 @@
-const  { userService }  = require('../services');
+const { userService }  = require('../services');
 const { catchAsync } = require('../utils/error');
 
 
@@ -13,7 +13,7 @@ const signIn = catchAsync(async (req, res) => {
 
     const accessToken = await userService.signIn(authCode);
 
-     return res.status(201).json({ accessToken });
+    return res.status(201).json({ accessToken });
 
 })
 

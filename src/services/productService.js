@@ -17,12 +17,6 @@ const getProductDetail = async (userId, productId) => {
     return product;
 }
 
-const getPriceFilter = async (userId, lowprice, highprice) => {
-
-    const PriceFilter = await productDao.getPriceFilter(userId, lowprice, highprice);
-
-    return PriceFilter;
-}
 
 const productSearch = async (userId, keyword) => {
 
@@ -35,10 +29,15 @@ const productNameSearch = async (keyword) => {
     
 }
 
+const getPriceFilter = async (userId, lowprice, highprice) => {
+
+    return await productDao.getPriceFilter(userId, lowprice, highprice);
+}
 module.exports = { 
     getProducts,
     getProductDetail,
     getPriceFilter,
     productSearch,
-    productNameSearch
+    productNameSearch,
+    getPriceFilter
 }

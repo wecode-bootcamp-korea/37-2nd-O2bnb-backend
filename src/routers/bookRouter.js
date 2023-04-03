@@ -11,6 +11,5 @@ router.patch('/confirm/order', bookController.confirmBooking);
 router.get('/payment', bookController.completeBooking);
 router.patch('/cancel/:productId', bookController.cancelBooking);
 router.get('/all', bookController.getAllBookings);
-router.get('/check/:productId', bookController.ckeckDates)
 
 module.exports = router;

@@ -165,6 +165,7 @@ const checkBookingList = async (userId, productId, startDate, endDate) => {
   return result[0].trueORfalse;
 };
 
+
 module.exports = {
   makeBooking,
   getAllBookings,
